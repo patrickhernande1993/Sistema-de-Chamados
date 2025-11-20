@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Ticket, TicketStatus, TicketPriority, AIAnalysis, TicketCategory, User, Attachment } from '../types';
 import { ArrowLeft, Send, Sparkles, AlertTriangle, User as UserIcon, Bot, Check, Trash2, Pencil, X, Save, Paperclip, File as FileIcon, Download, Upload } from 'lucide-react';
@@ -60,8 +59,9 @@ export const TicketDetail: React.FC<TicketDetailProps> = ({ ticket, currentUser,
   }, [ticket]);
 
   const handleAnalyze = async () => {
+    // Check for API key
     if (!process.env.API_KEY) {
-      alert("Por favor, defina sua API_KEY nas variáveis de ambiente.");
+      alert("API Key do Google não encontrada.");
       return;
     }
     setIsAnalyzing(true);

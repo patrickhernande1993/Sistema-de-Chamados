@@ -1,13 +1,25 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { TicketPriority, TicketCategory, AIAnalysis } from "../types";
 
-// Initialize Gemini
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Initialize Gemini using process.env.API_KEY
+const apiKey = process.env.API_KEY || '';
+
+let ai: GoogleGenAI | null = null;
+if (apiKey) {
+    ai = new GoogleGenAI({ apiKey: apiKey });
+} else {
+    console.warn("API_KEY não encontrada. As funcionalidades de IA estarão desabilitadas.");
+}
 
 export const analyzeTicketWithGemini = async (
   title: string,
   description: string
 ): Promise<AIAnalysis | null> => {
+  if (!ai) {
+      console.error("Gemini API não inicializada. Verifique a chave de API.");
+      return null;
+  }
+
   try {
     const prompt = `
       Analise o seguinte ticket de suporte.

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { TicketPriority, TicketCategory, TicketStatus, User, Attachment } from '../types';
 import { X, Loader2, Sparkles, Paperclip, File as FileIcon, Trash2 } from 'lucide-react';
@@ -81,7 +80,7 @@ export const NewTicketModal: React.FC<NewTicketModalProps> = ({ currentUser, onC
     let finalPriority = priority;
     let finalCategory = category;
     
-    // Pre-analyze using Gemini
+    // Pre-analyze using Gemini if Key exists
     if (process.env.API_KEY) {
         const analysis = await analyzeTicketWithGemini(title, description);
         if (analysis) {
