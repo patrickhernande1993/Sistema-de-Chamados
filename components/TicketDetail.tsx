@@ -59,11 +59,6 @@ export const TicketDetail: React.FC<TicketDetailProps> = ({ ticket, currentUser,
   }, [ticket]);
 
   const handleAnalyze = async () => {
-    // Check for API key
-    if (!process.env.API_KEY) {
-      alert("API Key do Google não encontrada.");
-      return;
-    }
     setIsAnalyzing(true);
     const result = await analyzeTicketWithGemini(ticket.title, ticket.description);
     if (result) {

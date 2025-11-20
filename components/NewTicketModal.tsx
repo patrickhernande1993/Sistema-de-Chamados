@@ -80,14 +80,12 @@ export const NewTicketModal: React.FC<NewTicketModalProps> = ({ currentUser, onC
     let finalPriority = priority;
     let finalCategory = category;
     
-    // Pre-analyze using Gemini if Key exists
-    if (process.env.API_KEY) {
-        const analysis = await analyzeTicketWithGemini(title, description);
-        if (analysis) {
-            aiData = analysis;
-            finalPriority = analysis.suggestedPriority;
-            finalCategory = analysis.suggestedCategory;
-        }
+    // Pre-analyze using Gemini
+    const analysis = await analyzeTicketWithGemini(title, description);
+    if (analysis) {
+        aiData = analysis;
+        finalPriority = analysis.suggestedPriority;
+        finalCategory = analysis.suggestedCategory;
     }
 
     // Generate ID

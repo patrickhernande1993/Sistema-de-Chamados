@@ -4,8 +4,9 @@ import react from '@vitejs/plugin-react';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  // IMPORTANTE: Troque 'nexticket-ai' pelo nome exato do seu repositório no GitHub
+  base: '/nexticket-ai/',
   define: {
-    // Garante compatibilidade caso alguma lib legada use process.env
     'process.env': {}
   }
 });
