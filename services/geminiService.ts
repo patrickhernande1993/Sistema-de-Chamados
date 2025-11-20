@@ -1,12 +1,21 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { TicketPriority, TicketCategory, AIAnalysis } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Acesso seguro ao import.meta.env para evitar erros "Cannot read properties of undefined"
+// se o ambiente Vite não injetar o objeto corretamente.
+const apiKey = (import.meta.env && import.meta.env.VITE_GOOGLE_API_KEY) || "";
+
+const ai = new GoogleGenAI({ apiKey: apiKey });
 
 export const analyzeTicketWithGemini = async (
   title: string,
   description: string
 ): Promise<AIAnalysis | null> => {
+  if (!apiKey) {
+      console.warn("API Key do Gemini não configurada (VITE_GOOGLE_API_KEY).");
+      return null;
+  }
+
   try {
     const prompt = `
       Analise o seguinte ticket de suporte.

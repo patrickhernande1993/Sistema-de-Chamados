@@ -4,9 +4,7 @@ import react from '@vitejs/plugin-react';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // IMPORTANTE: Troque 'nexticket-ai' pelo nome exato do seu repositório no GitHub
-  base: '/Sistema-de-Chamados/',
-  define: {
-    'process.env': {}
-  }
+  // IMPORTANTE: O base deve corresponder ao nome do repositório no GitHub Pages
+  // Se o repositório for https://usuario.github.io/nexticket-ai/, o base é '/nexticket-ai/'
+  base: '/nexticket-ai/', 
 });
