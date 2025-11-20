@@ -3,16 +3,13 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "homepage": "https://SEU_USUARIO_GITHUB.github.io/nexticket-ai",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@google/genai": "^0.1.1",
+    "@google/genai": "^0.2.0",
     "@supabase/supabase-js": "^2.39.3",
     "lucide-react": "^0.344.0",
     "react": "^18.2.0",
@@ -24,7 +21,6 @@
     "@types/react-dom": "^18.2.19",
     "@vitejs/plugin-react": "^4.2.1",
     "typescript": "^5.2.2",
-    "vite": "^5.1.4",
-    "gh-pages": "^6.1.1"
+    "vite": "^5.1.4"
   }
 }
