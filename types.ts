@@ -1,84 +1,49 @@
 
-export enum TicketStatus {
-  OPEN = 'OPEN',
-  IN_PROGRESS = 'IN_PROGRESS',
-  RESOLVED = 'RESOLVED',
-  CLOSED = 'CLOSED'
+export enum BillStatus {
+  PENDING = 'PENDING',
+  PAID = 'PAID',
+  OVERDUE = 'OVERDUE'
 }
 
-export enum TicketPriority {
-  LOW = 'LOW',
-  MEDIUM = 'MEDIUM',
-  HIGH = 'HIGH',
-  CRITICAL = 'CRITICAL'
-}
-
-export enum TicketCategory {
-  BUG = 'BUG',
-  FEATURE_REQUEST = 'FEATURE_REQUEST',
-  BILLING = 'BILLING',
-  SUPPORT = 'SUPPORT',
+export enum BillCategory {
+  HOUSING = 'HOUSING',     // Aluguel, Condomínio
+  UTILITIES = 'UTILITIES', // Luz, Água, Internet
+  FOOD = 'FOOD',           // Mercado, Ifood
+  TRANSPORT = 'TRANSPORT', // Uber, Gasolina
+  LEISURE = 'LEISURE',     // Lazer
+  HEALTH = 'HEALTH',       // Saúde
   OTHER = 'OTHER'
 }
-
-export type UserRole = 'DEV' | 'USER';
-export type UserStatus = 'ACTIVE' | 'INACTIVE';
 
 export interface User {
   id: string;
   name: string;
   email: string;
-  role: UserRole;
-  status: UserStatus;
+  role: 'DEV' | 'USER';
+  status: 'ACTIVE' | 'INACTIVE';
   avatar?: string;
 }
 
-export interface AIAnalysis {
-  suggestedPriority: TicketPriority;
-  suggestedCategory: TicketCategory;
-  sentimentScore: number; // 0 to 100
-  sentimentLabel: 'Positive' | 'Neutral' | 'Negative';
-  summary: string;
-  suggestedReply: string;
+export interface FinanceAnalysis {
+  isExpensive: boolean;
+  savingsTip: string;
+  categoryInsight: string;
+  sentimentLabel: 'Good' | 'Warning' | 'Bad';
 }
 
-export interface TicketMessage {
+export interface Bill {
   id: string;
-  sender: 'USER' | 'AGENT' | 'AI';
-  content: string;
-  timestamp: string;
-}
-
-export interface Attachment {
-  name: string;
-  url: string;
-  type: string;
-  size: number;
-}
-
-export interface Ticket {
-  id: string;
+  userId: string; // Relacionado ao user.id do Supabase
   title: string;
-  description: string;
-  requester: string;
-  ownerEmail: string; // Used to filter tickets by user
-  status: TicketStatus;
-  priority: TicketPriority;
-  category: TicketCategory;
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
-  aiAnalysis?: AIAnalysis;
-  messages: TicketMessage[];
-  attachments?: Attachment[];
-}
-
-export interface Notification {
-  id: string;
-  recipientEmail: string;
-  ticketId: string;
-  message: string;
-  read: boolean;
+  amount: number;
+  category: BillCategory;
+  status: BillStatus;
+  dueDate: string; // YYYY-MM-DD
+  paidDate?: string; // YYYY-MM-DD
+  notes?: string;
+  attachmentUrl?: string;
+  aiAnalysis?: FinanceAnalysis;
   createdAt: string;
 }
 
-export type ViewState = 'DASHBOARD' | 'LIST' | 'DETAIL' | 'USERS' | 'NOTIFICATIONS';
+export type ViewState = 'DASHBOARD' | 'LIST' | 'DETAIL' | 'USERS';

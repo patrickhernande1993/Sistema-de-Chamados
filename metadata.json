@@ -1,5 +1,5 @@
 {
-  "name": "NexTicket AI",
-  "description": "Um sistema inteligente de helpdesk com tecnologia Gemini 2.5 Flash. Possui triagem automática, análise de sentimentos e respostas geradas por IA.",
+  "name": "Gestão de Apê",
+  "description": "Gerenciamento financeiro inteligente para despesas domésticas com consultoria via Gemini AI.",
   "requestFramePermissions": []
 }
