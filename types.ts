@@ -15,12 +15,16 @@ export enum BillCategory {
   OTHER = 'OTHER'
 }
 
+// Exported types to fix build errors in UserManagement.tsx
+export type UserRole = 'DEV' | 'USER';
+export type UserStatus = 'ACTIVE' | 'INACTIVE';
+
 export interface User {
   id: string;
   name: string;
   email: string;
-  role: 'DEV' | 'USER';
-  status: 'ACTIVE' | 'INACTIVE';
+  role: UserRole;
+  status: UserStatus;
   avatar?: string;
 }
 
@@ -46,4 +50,17 @@ export interface Bill {
   createdAt: string;
 }
 
-export type ViewState = 'DASHBOARD' | 'LIST' | 'DETAIL' | 'USERS';
+// Alias 'Ticket' to 'Bill' so legacy components (Notifications, etc) can compile without rewrite
+export type Ticket = Bill;
+
+// Exported type to fix build errors in Notifications.tsx
+export interface Notification {
+  id: string;
+  recipientEmail: string;
+  ticketId: string; // Refers to Bill ID
+  message: string;
+  read: boolean;
+  createdAt: string;
+}
+
+export type ViewState = 'DASHBOARD' | 'LIST' | 'DETAIL' | 'USERS' | 'NOTIFICATIONS';
