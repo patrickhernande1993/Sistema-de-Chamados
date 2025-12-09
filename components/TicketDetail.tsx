@@ -1,8 +1,7 @@
 
-import React, { useState } from 'react';
-import { Bill, BillStatus, BillCategory, User } from '../types';
-import { ArrowLeft, Sparkles, Check, Trash2, Calendar, DollarSign, Upload, File as FileIcon, ExternalLink } from 'lucide-react';
-import { analyzeBillWithGemini } from '../services/geminiService';
+import React from 'react';
+import { Bill, BillStatus, User } from '../types';
+import { ArrowLeft, Check, Trash2, Calendar, DollarSign, Upload, File as FileIcon, ExternalLink } from 'lucide-react';
 import { supabase } from '../services/supabaseClient';
 
 interface DetailProps {
@@ -14,17 +13,7 @@ interface DetailProps {
 }
 
 export const TicketDetail: React.FC<DetailProps> = ({ ticket: bill, onBack, onUpdateTicket, onDeleteTicket }) => {
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
   
-  const handleAnalyze = async () => {
-      setIsAnalyzing(true);
-      const analysis = await analyzeBillWithGemini(bill.title, bill.amount, bill.category);
-      if (analysis) {
-          onUpdateTicket({ ...bill, aiAnalysis: analysis });
-      }
-      setIsAnalyzing(false);
-  };
-
   const markAsPaid = () => {
       const today = new Date().toISOString().split('T')[0];
       onUpdateTicket({ ...bill, status: BillStatus.PAID, paidDate: today });
@@ -126,7 +115,7 @@ export const TicketDetail: React.FC<DetailProps> = ({ ticket: bill, onBack, onUp
                </div>
            </div>
 
-           {/* Right Column: AI & Status */}
+           {/* Right Column: Status Only */}
            <div className="space-y-6">
                <div className={`p-6 rounded-2xl border ${bill.status === BillStatus.PAID ? 'bg-emerald-50 border-emerald-200' : bill.status === BillStatus.OVERDUE ? 'bg-red-50 border-red-200' : 'bg-yellow-50 border-yellow-200'}`}>
                    <label className="text-xs font-bold opacity-60 uppercase mb-1 block">Status Atual</label>
@@ -134,52 +123,6 @@ export const TicketDetail: React.FC<DetailProps> = ({ ticket: bill, onBack, onUp
                        {bill.status === BillStatus.PAID ? 'PAGO' : bill.status === BillStatus.OVERDUE ? 'VENCIDA' : 'PENDENTE'}
                    </p>
                    {bill.paidDate && <p className="text-sm mt-1 opacity-80">Pago em: {bill.paidDate.split('-').reverse().join('/')}</p>}
-               </div>
-
-               {/* AI Analysis */}
-               <div className="bg-white rounded-2xl shadow-sm border border-indigo-100 overflow-hidden">
-                   <div className="p-4 bg-indigo-50 border-b border-indigo-100 flex items-center justify-between">
-                       <h3 className="font-semibold text-indigo-900 flex items-center gap-2">
-                           <Sparkles className="w-4 h-4 text-indigo-600" /> Consultor Gemini
-                       </h3>
-                   </div>
-                   
-                   <div className="p-4">
-                       {bill.aiAnalysis ? (
-                           <div className="space-y-4">
-                               <div className="flex items-center gap-2">
-                                   <span className={`px-2 py-1 text-xs font-bold rounded ${
-                                       bill.aiAnalysis.sentimentLabel === 'Good' ? 'bg-green-100 text-green-700' :
-                                       bill.aiAnalysis.sentimentLabel === 'Bad' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'
-                                   }`}>
-                                       {bill.aiAnalysis.sentimentLabel === 'Good' ? 'Valor OK' : bill.aiAnalysis.sentimentLabel === 'Bad' ? 'Caro' : 'Atenção'}
-                                   </span>
-                                   {bill.aiAnalysis.isExpensive && <span className="text-xs text-red-500 font-medium">Acima da média</span>}
-                               </div>
-                               
-                               <div>
-                                   <label className="text-[10px] font-bold text-indigo-300 uppercase">Dica de Economia</label>
-                                   <p className="text-sm text-slate-700 mt-1 italic">"{bill.aiAnalysis.savingsTip}"</p>
-                               </div>
-
-                               <div>
-                                   <label className="text-[10px] font-bold text-indigo-300 uppercase">Insight</label>
-                                   <p className="text-xs text-slate-500 mt-1">{bill.aiAnalysis.categoryInsight}</p>
-                               </div>
-                           </div>
-                       ) : (
-                           <div className="text-center py-4">
-                               <p className="text-xs text-slate-400 mb-3">Analise este gasto para receber dicas.</p>
-                               <button 
-                                   onClick={handleAnalyze} 
-                                   disabled={isAnalyzing}
-                                   className="w-full py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50"
-                               >
-                                   {isAnalyzing ? 'Analisando...' : 'Analisar Despesa'}
-                               </button>
-                           </div>
-                       )}
-                   </div>
                </div>
            </div>
        </div>
